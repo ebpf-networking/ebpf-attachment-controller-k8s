@@ -1,0 +1,71 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ebpf-attachment-controller
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list", "create", "delete", "patch"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: [""]
+  resources: ["nodes/status"]
+  verbs: ["patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ebpf-attachment-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ebpf-attachment-controller 
+subjects:
+- kind: ServiceAccount
+  name: ebpf-attachment-controller
+  namespace: kube-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ebpf-attachment-controller 
+  namespace: kube-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ebpf-attachment-controller
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: ebpf-attachment-controller
+  template:
+    metadata:
+      labels:
+        app: ebpf-attachment-controller
+    spec:
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      serviceAccount: ebpf-attachment-controller
+      hostNetwork: true
+      hostPID: true
+      priorityClassName: system-node-critical
+      containers:
+      - name: ebpf-attachment-controller
+        image: db/ebpf-attachment-controller
+        imagePullPolicy: Always
+        command:
+        - /opt/bin/controller
+        securityContext:
+          privileged: true
+          allowPrivilegeEscalation: true
+        volumeMounts:
+        - name: opt
+          mountPath: /opt
+      volumes:
+      - name: opt
+        hostPath:
+          path: /opts

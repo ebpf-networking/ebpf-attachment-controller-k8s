@@ -1,0 +1,32 @@
+{
+    "attachments" : {
+        "mac-filter": {
+            "program": "ebpf based mac filtering code",
+            "cmd": "execute.sh",
+            "path": "/root/dushyant/Controller/bpf-filter",
+            "args" : [
+                "VETH_NAME",
+                "VETH_ID"
+            ]
+        },
+        "test-program-1": {
+            "program": "ebpf based test code 1",
+            "cmd": "execute.sh",
+            "path": "test-path",
+            "args" : [
+                "VETH_NAME",
+                "VETH_ID",
+                "VETH_MAC"
+            ]}, 
+        "test-program-2": {
+            "program": "ebpf based test code 2",
+            "cmd": "execute.sh",
+            "path": "test-path",
+            "args" : [
+                "VETH_NAME",
+                "VETH_ID",
+                "VETH_MAC"
+            ]
+        }
+    }
+}

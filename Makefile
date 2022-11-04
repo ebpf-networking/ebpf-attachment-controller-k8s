@@ -7,7 +7,7 @@ SRCDIR=src
 PWD=$(shell pwd)
 
 REGISTRY=
-IMAGE=ibm-research/ebpf-attachment-controller
+IMAGE=db/ebpf-attachment-controller
 TAG=0.01
 
 .PHONY: all

@@ -55,10 +55,15 @@ spec:
       priorityClassName: system-node-critical
       containers:
       - name: ebpf-attachment-controller
-        image: db/ebpf-attachment-controller
+        image: db/ebpf-attachment-controller:0.0.1
         imagePullPolicy: Always
         command:
         - /opt/bin/controller
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         securityContext:
           privileged: true
           allowPrivilegeEscalation: true

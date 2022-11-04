@@ -47,7 +47,7 @@ func (c *PodNetworkController) Run(stopCh chan struct{}) error {
 func (c *PodNetworkController) isOurPod(pod *v1.Pod) bool {
 	// If this replica of daemonset is running on the same host as the pod
 	// then we take the ownership else someone else takes the ownership
-	return pod.Status.HostIP == c.host
+	return pod.Spec.NodeName == c.host
 }
 
 func (c *PodNetworkController) hasEBPFAttachment(pod *v1.Pod) bool {

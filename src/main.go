@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	MY_HOST             string = "MY_HOST"
+	MY_HOST             string = "MY_NODE_NAME"
 	DEFAULT_CONFIG_PATH string = "/opt/config/controller-config.json"
 )
 

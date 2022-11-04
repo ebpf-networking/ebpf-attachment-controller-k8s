@@ -14,7 +14,7 @@ type ebpfModule struct {
 	config *EbpfPrograms
 }
 
-func (m *ebpfModule) attachEBPFNetwork(pod *v1.Pod, program string) error {
+func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 
 	bpfProgram, ok := m.config.Programs[program]
 	if !ok {
@@ -55,7 +55,7 @@ func (m *ebpfModule) attachEBPFNetwork(pod *v1.Pod, program string) error {
 	return nil
 }
 
-func (m *ebpfModule) deleteEBPFNetwork(pod *v1.Pod, program string) {
+func (m *ebpfModule) DeleteEBPFNetwork(pod *v1.Pod, program string) {
 	klog.Infof("deleteEBPFNetwork Not implemented")
 }
 

@@ -15,7 +15,6 @@ spec:
         app: nginx
       annotations:
         ebpf-attachment: "mac-filter"
-        ebpf-attachment-status: "requested"
     spec:
       containers:
       - name: nginx

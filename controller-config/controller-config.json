@@ -3,7 +3,7 @@
         "mac-filter": {
             "program": "ebpf based mac filtering code",
             "cmd": "execute.sh",
-            "path": "/root/dushyant/Controller/bpf-filter",
+            "path": "/root/dushyant/Controller/bpf-filter/src",
             "args" : [
                 "VETH_NAME",
                 "VETH_ID"

@@ -16,7 +16,9 @@ import (
 
 const (
 	MY_HOST             string = "MY_NODE_NAME"
+	CONFIG_ENV          string = "CONTROLLER_CONFIG"
 	DEFAULT_CONFIG_PATH string = "/opt/config/controller-config.json"
+	DEFAULT_TOOLS_PATH  string = "/opt/src/tools/"
 )
 
 type KubeClient struct {
@@ -72,8 +74,14 @@ func main() {
 	_conf, _ := json.MarshalIndent(config, "", "\t")
 	klog.Infof("Config is %s", string(_conf))
 
+	toolsPath := os.Getenv("CONTROLLER_TOOLS")
+	if !(len(toolsPath) > 1) {
+		toolsPath = DEFAULT_TOOLS_PATH
+	}
+
 	m := new(ebpfModule)
 	m.config = config
+	m.toolsPath = toolsPath
 
 	host := os.Getenv(MY_HOST)
 	if !(len(host) > 1) {

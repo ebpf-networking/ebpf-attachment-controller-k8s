@@ -121,9 +121,10 @@ func (c *PodNetworkController) podUpdate(_oldPod, _newPod interface{}) {
 			if err != nil {
 				klog.Info("ebpf attachment failed. %s", err)
 				status = EBPF_FAILED
+			} else {
+				klog.Info("ebpf attachment done.")
+				status = EBPF_ATTACHED
 			}
-			klog.Info("ebpf attachment done.")
-			status = EBPF_ATTACHED
 			c.setAttachmentStatus(newPod, status)
 		}
 	}
@@ -136,10 +137,10 @@ func (c *PodNetworkController) podDelete(obj interface{}) {
 	}
 
 	klog.Infof("POD DELETED: %s/%s", pod.Namespace, pod.Name)
-	klog.Infof("Removing bpf attachment")
 	if c.hasEBPFAttachment(pod) {
 		annotations := pod.ObjectMeta.GetAnnotations()
 		program := annotations[EBPF_ATTACHMENT]
+		klog.Infof("Removing bpf attachment")
 		c.ebpfController.DeleteEBPFNetwork(pod, program)
 	}
 }

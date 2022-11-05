@@ -11,7 +11,8 @@ import (
 )
 
 type ebpfModule struct {
-	config *EbpfPrograms
+	toolsPath string
+	config    *EbpfPrograms
 }
 
 func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
@@ -32,9 +33,16 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 		return err
 	}
 
+	klog.Infof("veth info extracted")
+
 	// Check the requested attachment
 	cmd := exec.Command("/bin/bash", bpfProgram.CMD)
+
+	klog.Infof("cmd is %s",bpfProgram.CMD)
+
 	cmd.Dir = bpfProgram.Path
+
+	klog.Infof("dir is %s", bpfProgram.Path)
 
 	for _, requested := range bpfProgram.Env {
 		switch requested {
@@ -47,10 +55,14 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 		}
 	}
 
+	klog.Infof("env is %v", cmd.Env)
+
 	stdout, err := cmd.Output()
 	if err != nil {
 		return err
 	}
+	klog.Infof("command executed")
+
 	klog.Infof(string(stdout))
 	return nil
 }
@@ -71,7 +83,7 @@ func (m *ebpfModule) extractVethInfo(pod *v1.Pod) (*veth_info, error) {
 		klog.Infof("container[%d] : %s", i, container_id)
 
 		// Get the veth information from container id
-		info, err = extractVethIDFromContainerID(container_id)
+		info, err = extractVethIDFromContainerID(container_id, m.toolsPath)
 		if err != nil {
 			klog.Errorf(err.Error())
 			continue

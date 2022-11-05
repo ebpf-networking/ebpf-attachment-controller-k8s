@@ -1,7 +1,7 @@
 BINDIR=bin
 EXEC=ebpf-attachment-controller
 
-BUILDDIR=build
+BUILD_DIR=build
 SRCDIR=src
 
 PWD=$(shell pwd)

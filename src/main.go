@@ -14,13 +14,6 @@ import (
 	"k8s.io/kubectl/pkg/util/logs"
 )
 
-const (
-	MY_HOST             string = "MY_NODE_NAME"
-	CONFIG_ENV          string = "CONTROLLER_CONFIG"
-	DEFAULT_CONFIG_PATH string = "/opt/config/controller-config.json"
-	DEFAULT_TOOLS_PATH  string = "/opt/src/tools/"
-)
-
 type KubeClient struct {
 	Client kubernetes.Interface
 }
@@ -29,7 +22,7 @@ func (k8 *KubeClient) InitKubeClient() error {
 	var kubeConfig *rest.Config
 	var err error
 
-	kubeConfigPath := os.Getenv("KUBECONFIG")
+	kubeConfigPath := os.Getenv(ENV_KUBECONFIG)
 	if len(kubeConfigPath) > 0 {
 		klog.Infof("loading from kubeconfig file %s", kubeConfigPath)
 		kubeConfig, err = clientcmd.BuildConfigFromFlags("", kubeConfigPath)
@@ -61,7 +54,7 @@ func main() {
 
 	klog.Infof("Loading config")
 
-	configPath = os.Getenv("CONTROLLER_CONFIG")
+	configPath = os.Getenv(ENV_CONFIG_PATH)
 	if !(len(configPath) > 1) {
 		configPath = DEFAULT_CONFIG_PATH
 	}
@@ -74,7 +67,7 @@ func main() {
 	_conf, _ := json.MarshalIndent(config, "", "\t")
 	klog.Infof("Config is %s", string(_conf))
 
-	toolsPath := os.Getenv("CONTROLLER_TOOLS")
+	toolsPath := os.Getenv(ENV_CONTROLLER_TOOLS_PATH)
 	if !(len(toolsPath) > 1) {
 		toolsPath = DEFAULT_TOOLS_PATH
 	}
@@ -83,7 +76,7 @@ func main() {
 	m.config = config
 	m.toolsPath = toolsPath
 
-	host := os.Getenv(MY_HOST)
+	host := os.Getenv(ENV_MY_HOST)
 	if !(len(host) > 1) {
 		klog.Fatal("Could not retrieve host information")
 	}

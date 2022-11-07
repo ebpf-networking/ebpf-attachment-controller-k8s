@@ -14,16 +14,6 @@ import (
 	klog "k8s.io/klog/v2"
 )
 
-const (
-	EBPF_ATTACHMENT        string = "ebpf-attachment"
-	EBPF_ATTACHMENT_STATUS string = "ebpf-attachment-status"
-)
-
-const (
-	EBPF_ATTACHED string = "attached"
-	EBPF_FAILED   string = "failed"
-)
-
 type PodNetworkController struct {
 	clientset       kubernetes.Interface
 	informerFactory informers.SharedInformerFactory
@@ -51,32 +41,32 @@ func (c *PodNetworkController) isOurPod(pod *v1.Pod) bool {
 }
 
 func (c *PodNetworkController) hasEBPFAttachment(pod *v1.Pod) bool {
-	if !apimachinery.HasAnnotation(pod.ObjectMeta, EBPF_ATTACHMENT) {
-		klog.Infof("Pod %s doesnt contain %s annotation", pod.Name, EBPF_ATTACHMENT)
+	if !apimachinery.HasAnnotation(pod.ObjectMeta, POD_ANNOTATION_EBPF_ATTACHMENT) {
+		klog.Infof("Pod %s doesnt contain %s annotation", pod.Name, POD_ANNOTATION_EBPF_ATTACHMENT)
 		return false
 	}
 	return true
 }
 
 func (c *PodNetworkController) isEBPFAttached(pod *v1.Pod) bool {
-	if !apimachinery.HasAnnotation(pod.ObjectMeta, EBPF_ATTACHMENT_STATUS) {
-		klog.Infof("Pod %s doesnt contain %s annotation", pod.Name, EBPF_ATTACHMENT_STATUS)
+	if !apimachinery.HasAnnotation(pod.ObjectMeta, POD_ANNOTATION_ATTACHMENT_STATUS) {
+		klog.Infof("Pod %s doesnt contain %s annotation", pod.Name, POD_ANNOTATION_ATTACHMENT_STATUS)
 		return false
 	}
 	annotations := pod.GetAnnotations()
-	status := annotations[EBPF_ATTACHMENT_STATUS]
+	status := annotations[POD_ANNOTATION_ATTACHMENT_STATUS]
 
 	if (status != EBPF_ATTACHED) && (status != EBPF_FAILED) {
 		return false
 	}
 	klog.Infof("Pod %s contains annotation %s - %s",
-		pod.Name, EBPF_ATTACHMENT_STATUS, status)
+		pod.Name, POD_ANNOTATION_ATTACHMENT_STATUS, status)
 	return true
 }
 
 func (c *PodNetworkController) setAttachmentStatus(pod *v1.Pod, status string) error {
 	annotations := pod.ObjectMeta.GetAnnotations()
-	annotations[EBPF_ATTACHMENT_STATUS] = status
+	annotations[POD_ANNOTATION_ATTACHMENT_STATUS] = status
 
 	copyPod := pod.DeepCopy()
 	copyPod.SetAnnotations(annotations)
@@ -116,7 +106,7 @@ func (c *PodNetworkController) podUpdate(_oldPod, _newPod interface{}) {
 			var status string
 			klog.Infof("POD is in Running phase. %s/%s", newPod.Namespace, newPod.Name)
 			annotations := newPod.ObjectMeta.GetAnnotations()
-			program := annotations[EBPF_ATTACHMENT]
+			program := annotations[POD_ANNOTATION_EBPF_ATTACHMENT]
 			err := c.ebpfController.AttachEBPFNetwork(newPod, program)
 			if err != nil {
 				klog.Info("ebpf attachment failed. %s", err)
@@ -139,7 +129,7 @@ func (c *PodNetworkController) podDelete(obj interface{}) {
 	klog.Infof("POD DELETED: %s/%s", pod.Namespace, pod.Name)
 	if c.hasEBPFAttachment(pod) {
 		annotations := pod.ObjectMeta.GetAnnotations()
-		program := annotations[EBPF_ATTACHMENT]
+		program := annotations[POD_ANNOTATION_EBPF_ATTACHMENT]
 		klog.Infof("Removing bpf attachment")
 		c.ebpfController.DeleteEBPFNetwork(pod, program)
 	}

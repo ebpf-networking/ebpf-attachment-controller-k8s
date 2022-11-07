@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"os/exec"
 )
 
@@ -25,7 +25,7 @@ func extractVethIDFromContainerID(containerid string, toolsPath string) (*veth_i
 		return nil, err
 	}
 
-	fmt.Printf("Cmd executed. output %s",string(stdout))
+	fmt.Printf("Cmd executed. output %s", string(stdout))
 
 	info := new(veth_info)
 	err = json.Unmarshal([]byte(stdout), &info)

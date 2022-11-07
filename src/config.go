@@ -6,12 +6,6 @@ import (
 	"io/ioutil"
 )
 
-const (
-	VETH_NAME string = "VETH_NAME"
-	VETH_ID          = "VETH_ID"
-	VETH_MAC         = "VETH_MAC"
-)
-
 type BPFProgram struct {
 	Prog string   `json:"program"` // Program name which is requested by
 	CMD  string   `json:"cmd"`     // bash script to execute fror the program

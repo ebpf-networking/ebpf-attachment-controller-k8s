@@ -38,21 +38,23 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 	// Check the requested attachment
 	cmd := exec.Command("/bin/bash", bpfProgram.CMD)
 
-	klog.Infof("cmd is %s",bpfProgram.CMD)
+	klog.Infof("cmd is %s", bpfProgram.CMD)
 
 	cmd.Dir = bpfProgram.Path
 
 	klog.Infof("dir is %s", bpfProgram.Path)
 
 	for _, requested := range bpfProgram.Env {
+		var param string
 		switch requested {
-		case VETH_NAME:
-			cmd.Env = append(cmd.Env, VETH_NAME+"="+info.Name)
-		case VETH_ID:
-			cmd.Env = append(cmd.Env, VETH_ID+"="+info.Index)
-		case VETH_MAC:
-			cmd.Env = append(cmd.Env, VETH_MAC+"="+info.MAC)
+		case BPF_ARG_VETH_NAME:
+			param = requested + "=" + info.Name
+		case BPF_ARG_VETH_ID:
+			param = requested + "=" + info.Index
+		case BPF_ARG_VETH_MAC:
+			param = requested + "=" + info.MAC
 		}
+		cmd.Env = append(cmd.Env, param)
 	}
 
 	klog.Infof("env is %v", cmd.Env)

@@ -6,7 +6,7 @@ SRCDIR=src
 
 PWD=$(shell pwd)
 
-REGISTRY=
+REGISTRY=ghcr.io
 IMAGE=db/ebpf-attachment-controller
 TAG=0.01
 

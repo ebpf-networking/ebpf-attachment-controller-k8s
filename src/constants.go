@@ -1,9 +1,13 @@
 package main
 
 const (
-	BPF_ARG_VETH_NAME string = "VETH_NAME"
-	BPF_ARG_VETH_ID          = "VETH_ID"
-	BPF_ARG_VETH_MAC         = "VETH_MAC"
+	BPF_ARG_VETH_NAME  string = "VETH_NAME"
+	BPF_ARG_VETH_ID           = "VETH_ID"
+	BPF_ARG_VETH_MAC          = "VETH_MAC"
+	BPF_ARG_VPEER_NAME        = "VPEER_NAME"
+	BPF_ARG_VPEER_ID          = "VPEER_ID"
+	BPF_ARG_VPEER_MAC         = "VPEER_MAC"
+	BPF_ARG_NAMESPACE         = "NAMESPACE"
 )
 
 const (

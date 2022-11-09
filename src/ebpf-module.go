@@ -15,6 +15,29 @@ type ebpfModule struct {
 	config    *EbpfPrograms
 }
 
+func (m *ebpfModule) getRequestedArg(requested string, info *veth_info) (string, error) {
+	var arg string
+	switch requested {
+	case BPF_ARG_VETH_NAME:
+		arg = info.VethName
+	case BPF_ARG_VETH_ID:
+		arg = info.VethIndex
+	case BPF_ARG_VETH_MAC:
+		arg = info.VethMac
+	case BPF_ARG_VPEER_NAME:
+		arg = info.VpeerName
+	case BPF_ARG_VPEER_ID:
+		arg = info.VpeerIndex
+	case BPF_ARG_VPEER_MAC:
+		arg = info.VpeerMac
+	case BPF_ARG_NAMESPACE:
+		arg = info.Namespace
+	default:
+		return "", fmt.Errorf("Requested arg %s not available in veth-info.", requested)
+	}
+	return arg, nil
+}
+
 func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 
 	bpfProgram, ok := m.config.Programs[program]
@@ -45,16 +68,12 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 	klog.Infof("dir is %s", bpfProgram.Path)
 
 	for _, requested := range bpfProgram.Env {
-		var param string
-		switch requested {
-		case BPF_ARG_VETH_NAME:
-			param = requested + "=" + info.Name
-		case BPF_ARG_VETH_ID:
-			param = requested + "=" + info.Index
-		case BPF_ARG_VETH_MAC:
-			param = requested + "=" + info.MAC
+		param, err := m.getRequestedArg(requested, info)
+		if err != nil {
+			return err
 		}
-		cmd.Env = append(cmd.Env, param)
+		envArg := requested + "=" + param
+		cmd.Env = append(cmd.Env, envArg)
 	}
 
 	klog.Infof("env is %v", cmd.Env)

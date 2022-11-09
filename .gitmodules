@@ -1,0 +1,3 @@
+[submodule "bpf-attachments/bpf-filter"]
+	path = bpf-attachments/bpf-filter
+	url = https://github.com/ebpf-networking/bpf-filter.git

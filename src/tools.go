@@ -9,9 +9,13 @@ import (
 const GET_VETH_INFO_SCRIPT string = "get-veth-info.sh"
 
 type veth_info struct {
-	Name  string `json:"veth-name"`
-	Index string `json:"veth-id"`
-	MAC   string `json:"veth-mac"`
+	VethName   string `json:"veth-name"`
+	VethIndex  string `json:"veth-id"`
+	VethMac    string `json:"veth-mac"`
+	VpeerName  string `json:"veth-name"`
+	VpeerIndex string `json:"veth-id"`
+	VpeerMac   string `json:"veth-mac"`
+	Namespace  string `json:"netns"`
 }
 
 func extractVethIDFromContainerID(containerid string, toolsPath string) (*veth_info, error) {

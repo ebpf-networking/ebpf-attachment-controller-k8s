@@ -12,9 +12,9 @@ type veth_info struct {
 	VethName   string `json:"veth-name"`
 	VethIndex  string `json:"veth-id"`
 	VethMac    string `json:"veth-mac"`
-	VpeerName  string `json:"veth-name"`
-	VpeerIndex string `json:"veth-id"`
-	VpeerMac   string `json:"veth-mac"`
+	VpeerName  string `json:"vpeer-name"`
+	VpeerIndex string `json:"vpeer-id"`
+	VpeerMac   string `json:"vpeer-mac"`
 	Namespace  string `json:"netns"`
 }
 

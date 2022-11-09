@@ -28,6 +28,6 @@ const (
 )
 
 const (
-	DEFAULT_CONFIG_PATH string = "/opt/config/controller-config.json"
-	DEFAULT_TOOLS_PATH  string = "/opt/src/tools/"
+	DEFAULT_CONFIG_PATH string = "/opt/controller/config/controller-config.json"
+	DEFAULT_TOOLS_PATH  string = "/opt/controller/src/tools/"
 )

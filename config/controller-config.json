@@ -3,10 +3,8 @@
         "mac-filter": {
             "program": "ebpf based mac filtering code",
             "cmd": "bpf-filter.sh",
-            "path": "/opt/bpf-attachments/bpf-filter/",
+            "path": "/opt/controller/bpf-attachments/bpf-filter/",
             "args" : [
-                "VETH_NAME",
-                "VETH_ID",
                 "VPEER_NAME",
                 "VPEER_ID",
                 "NAMESPACE"

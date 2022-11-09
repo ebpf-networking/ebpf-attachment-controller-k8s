@@ -58,12 +58,16 @@ spec:
         image: db/ebpf-attachment-controller:0.0.1
         imagePullPolicy: Always
         command:
-        - /opt/bin/controller
+        - /opt/controller/bin/ebpf-attachment-controller
         env:
         - name: MY_NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: CONTROLLER_CONFIG
+          value: /opt/controller/config/controller-config.json
+        - name: CONTROLLER_TOOLS
+          value: /opt/controller/src/tools/
         securityContext:
           privileged: true
           allowPrivilegeEscalation: true

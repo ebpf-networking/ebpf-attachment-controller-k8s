@@ -6,9 +6,9 @@ SRCDIR=src
 
 PWD=$(shell pwd)
 
-REGISTRY=ghcr.io
-IMAGE=db/ebpf-attachment-controller
-TAG=0.01
+REGISTRY=docker.io
+IMAGE=dushyantbehl/ebpf-attachment-controller
+TAG=latest
 
 .PHONY: all
 .default: ${EXEC}
@@ -24,7 +24,7 @@ docker-build: ${EXEC}
 	@docker tag ${IMAGE}:${TAG} ${REGISTRY}/${IMAGE}:${TAG}
 
 docker-push: docker-build
-#	@docker push ${REGISTRY}/${IMAGE}:${TAG}
+	@docker push ${IMAGE}:${TAG}
 
 install:
 #	@deploy/install.sh

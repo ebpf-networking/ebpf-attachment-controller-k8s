@@ -3,12 +3,11 @@
         "mac-filter": {
             "program": "ebpf based mac filtering code",
             "cmd": "bpf-filter.sh",
-            "path": "/opt/controller/bpf-attachments/bpf-filter/src",
+            "path": "/root/dushyant/ebpf-attachment-controller-k8s/bpf-attachments/bpf-filter/",
             "args" : [
-                "VPEER_NAME",
-                "VPEER_ID",
-                "VPEER_MAC",
-                "NAMESPACE"
+                "VETH_NAME",
+                "VETH_ID",
+                "VPEER_MAC"
             ]
         },
         "test-program-1": {

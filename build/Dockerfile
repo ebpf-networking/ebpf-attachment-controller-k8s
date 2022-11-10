@@ -3,7 +3,11 @@ FROM golang:1.19.2
 RUN apt-get update -y
 RUN apt-get install -y make gcc libssl-dev bc libelf-dev libcap-dev \
 	clang gcc-multilib llvm libncurses5-dev git pkg-config libmnl-dev \
-	bison flex libbpf-dev iproute2
+	bison flex libbpf-dev iproute2 jq wget
+
+RUN wget https://github.com/containerd/containerd/releases/download/v1.6.9/containerd-1.6.9-linux-amd64.tar.gz
+RUN tar -xvzf containerd-1.6.9-linux-amd64.tar.gz
+RUN mv bin/* /usr/bin/
 
 ARG controller=ebpf-attachment-controller
 ARG workdir=/opt/controller/
@@ -18,14 +22,6 @@ COPY ./config/${controller_config} ${workdir}/config/${controller_config}
 COPY ./src/tools ${workdir}/src/tools
 
 RUN chmod a+x -R ${workdir}/src/tools
-
-#RUN git clone https://git.kernel.org/pub/scm/network/iproute2/iproute2.git ;\
-#cd iproute2 ;\
-#./configure --prefix='/usr' ;\
-#make install ;\
-# install -m 0644 ./include/bpf_api.h /usr/include/iproute2
-
-#RUN cd ${workdir}/bpf-attachments/bpf-filter; make
 
 WORKDIR ${workdir}
 

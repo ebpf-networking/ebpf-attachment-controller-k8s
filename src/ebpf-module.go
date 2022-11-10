@@ -1,6 +1,8 @@
 package main
 
 import (
+	//	"io"
+	//	"bufio"
 	"errors"
 	"fmt"
 	"os/exec"
@@ -60,13 +62,23 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 
 	// Check the requested attachment
 	cmd := exec.Command("/bin/bash", bpfProgram.CMD)
-
-	klog.Infof("cmd is %s", bpfProgram.CMD)
-
+	/*
+		stderr, err := cmd.StderrPipe()
+		if err != nil {
+			klog.Errorf("could not get stderr pipe: %v", err)
+		} else {
+			go func() {
+				var cmdStr string = cmd.String()
+				reader := io.Reader(stderr)
+				scanner := bufio.NewScanner(reader)
+				for scanner.Scan() {
+					msg := scanner.Text()
+					fmt.Printf("stderr[%s]: %s\n",cmdStr, msg)
+				}
+			}()
+		}
+	*/
 	cmd.Dir = bpfProgram.Path
-
-	klog.Infof("dir is %s", bpfProgram.Path)
-
 	for _, requested := range bpfProgram.Env {
 		param, err := m.getRequestedArg(requested, info)
 		if err != nil {
@@ -76,15 +88,16 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 		cmd.Env = append(cmd.Env, envArg)
 	}
 
+	klog.Infof("dir is %s", bpfProgram.Path)
 	klog.Infof("env is %v", cmd.Env)
+	klog.Infof("cmd is %s", cmd)
 
 	stdout, err := cmd.Output()
+	klog.Infof("stdout is :-\n\t" + string(stdout))
 	if err != nil {
 		return err
 	}
 	klog.Infof("command executed")
-
-	klog.Infof(string(stdout))
 	return nil
 }
 

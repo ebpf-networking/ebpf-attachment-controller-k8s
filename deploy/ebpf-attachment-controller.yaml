@@ -55,10 +55,10 @@ spec:
       priorityClassName: system-node-critical
       containers:
       - name: ebpf-attachment-controller
-        image: db/ebpf-attachment-controller:0.0.1
+        image: dushyantbehl/ebpf-attachment-controller:latest
         imagePullPolicy: Always
-        command:
-        - /opt/controller/bin/ebpf-attachment-controller
+        command: ["/bin/bash","-c"]
+        args: ["ulimit -l unlimited; /opt/controller/bin/ebpf-attachment-controller"]
         env:
         - name: MY_NODE_NAME
           valueFrom:
@@ -71,10 +71,32 @@ spec:
         securityContext:
           privileged: true
           allowPrivilegeEscalation: true
+          capabilities:
+            add: ["NET_ADMIN"]
         volumeMounts:
-        - name: opt
-          mountPath: /opt
+        - name: containerdsock
+          mountPath: /run/containerd/
+        - name: sys
+          mountPath: /sys/
+        - name: var
+          mountPath: /var/
+        - name: proc
+          mountPath: /proc/
+        - name: run
+          mountPath: /run/
       volumes:
-      - name: opt
+      - name: containerdsock
         hostPath:
-          path: /opts
+          path: /run/containerd/
+      - name: sys
+        hostPath:
+          path: /sys/
+      - name: var
+        hostPath:
+          path: /var/
+      - name: proc
+        hostPath:
+          path: /proc/
+      - name: run
+        hostPath:
+          path: /run/

@@ -109,12 +109,13 @@ func (c *PodNetworkController) podUpdate(_oldPod, _newPod interface{}) {
 			program := annotations[POD_ANNOTATION_EBPF_ATTACHMENT]
 			err := c.ebpfController.AttachEBPFNetwork(newPod, program)
 			if err != nil {
-				klog.Info("ebpf attachment failed. %s", err)
+				klog.Infof("ebpf attachment failed. %s", err)
 				status = EBPF_FAILED
 			} else {
 				klog.Info("ebpf attachment done.")
 				status = EBPF_ATTACHED
 			}
+			klog.Infof("ebpf status %s\n",status)
 			c.setAttachmentStatus(newPod, status)
 		}
 	}

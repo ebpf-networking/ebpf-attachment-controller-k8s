@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
+
+	klog "k8s.io/klog/v2"
 )
 
 const GET_VETH_INFO_SCRIPT string = "get-veth-info.sh"
@@ -29,7 +31,7 @@ func extractVethIDFromContainerID(containerid string, toolsPath string) (*veth_i
 		return nil, err
 	}
 
-	fmt.Printf("Cmd executed. output %s", string(stdout))
+	klog.Infof("Tool %s executed. output:-\n\t%s", cmd, string(stdout))
 
 	info := new(veth_info)
 	err = json.Unmarshal([]byte(stdout), &info)

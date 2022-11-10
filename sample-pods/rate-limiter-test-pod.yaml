@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rate-limiter-test
+  labels:
+    app: rate-limiter-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rate-limiter-test
+  template:
+    metadata:
+      labels:
+        app: rate-limiter-test
+      annotations:
+        ebpf-attachment: "rate-limiter"
+    spec:
+      containers:
+      - name: rate-limiter-test
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80

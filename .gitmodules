@@ -1,3 +1,6 @@
 [submodule "bpf-attachments/bpf-filter"]
 	path = bpf-attachments/bpf-filter
 	url = https://github.com/ebpf-networking/bpf-filter.git
+[submodule "bpf-attachments/ebpf-ratelimiter"]
+	path = bpf-attachments/ebpf-ratelimiter
+	url = https://github.com/ebpf-networking/ebpf-ratelimiter.git

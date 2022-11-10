@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: mac-filter-test
   labels:
-    app: nginx
+    app: mac-filter-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: mac-filter-test
   template:
     metadata:
       labels:
-        app: nginx
+        app: mac-filter-test
       annotations:
         ebpf-attachment: "mac-filter"
     spec:
       containers:
-      - name: nginx
+      - name: mac-filter-test
         image: nginx:1.14.2
         ports:
         - containerPort: 80

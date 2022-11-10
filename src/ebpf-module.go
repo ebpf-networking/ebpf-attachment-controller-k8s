@@ -93,7 +93,7 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 	klog.Infof("cmd is %s", cmd)
 
 	stdout, err := cmd.Output()
-	klog.Infof("stdout is :-\n\t" + string(stdout))
+	klog.Infof("stdout is :-\n\n%s\n", string(stdout))
 	if err != nil {
 		return err
 	}

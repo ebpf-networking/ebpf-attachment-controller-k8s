@@ -10,24 +10,13 @@
                 "VPEER_MAC"
             ]
         },
-        "test-program-1": {
-            "program": "ebpf based test code 1",
-            "cmd": "execute.sh",
-            "path": "test-path",
+        "rate-limiter": {
+            "program": "rate limiter code",
+            "cmd": "map_update.sh",
+            "path": "/root/dushyant/ebpf-attachment-controller-k8s/bpf-attachments/ebpf-ratelimiter/",
             "args" : [
-                "VETH_NAME",
-                "VETH_ID",
-                "VETH_MAC"
-            ]}, 
-        "test-program-2": {
-            "program": "ebpf based test code 2",
-            "cmd": "execute.sh",
-            "path": "test-path",
-            "args" : [
-                "VETH_NAME",
-                "VETH_ID",
-                "VETH_MAC"
-            ]
+                "VETH_NAME"
+            ] 
         }
     }
 }

@@ -31,7 +31,7 @@ func extractVethIDFromContainerID(containerid string, toolsPath string) (*veth_i
 		return nil, err
 	}
 
-	klog.Infof("Tool %s executed. output:-\n\t%s", cmd, string(stdout))
+	klog.Infof("Tool %s executed. output:-\n\n%s\n", cmd, string(stdout))
 
 	info := new(veth_info)
 	err = json.Unmarshal([]byte(stdout), &info)

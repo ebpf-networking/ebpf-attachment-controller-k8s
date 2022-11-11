@@ -18,6 +18,4 @@ spec:
     spec:
       containers:
       - name: mac-filter-test
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
+        image: dushyantbehl/scapy-loadgen:latest

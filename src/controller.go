@@ -37,7 +37,9 @@ func (c *PodNetworkController) Run(stopCh chan struct{}) error {
 func (c *PodNetworkController) isOurPod(pod *v1.Pod) bool {
 	// If this replica of daemonset is running on the same host as the pod
 	// then we take the ownership else someone else takes the ownership
-	return pod.Spec.NodeName == c.host
+	return (pod.Namespace != "kube-system") &&
+		(pod.Namespace != "kube-flannel") &&
+		(pod.Spec.NodeName == c.host)
 }
 
 func (c *PodNetworkController) hasEBPFAttachment(pod *v1.Pod) bool {
@@ -115,7 +117,7 @@ func (c *PodNetworkController) podUpdate(_oldPod, _newPod interface{}) {
 				klog.Info("ebpf attachment done.")
 				status = EBPF_ATTACHED
 			}
-			klog.Infof("ebpf status %s\n",status)
+			klog.Infof("ebpf status %s\n", status)
 			c.setAttachmentStatus(newPod, status)
 		}
 	}

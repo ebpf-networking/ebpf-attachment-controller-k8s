@@ -37,7 +37,7 @@ docker-build-loadgen:
 	@docker build -t ${LOADGEN_IMAGE}:${TAG} -f ${LOADGEN_FILE} .
 	@docker tag ${LOADGEN_IMAGE}:${TAG} ${REGISTRY}/${LOADGEN_IMAGE}:${TAG}
 
-docker-push-loadgen:
+docker-push-loadgen: docker-build-loadgen
 	@docker push ${LOADGEN_IMAGE}:${TAG}
 
 ${ATTACHMENTS}:

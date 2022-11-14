@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mac-filter-test
+  name: loadgen-1
   labels:
-    app: mac-filter-test
+    app: loadgen-1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mac-filter-test
+      app: loadgen-1
   template:
     metadata:
       labels:
-        app: mac-filter-test
+        app: loadgen-1
       annotations:
         ebpf-attachment: "mac-filter"
     spec:
       containers:
-      - name: mac-filter-test
+      - name: loadgen-1
         image: dushyantbehl/scapy-loadgen:latest

@@ -14,7 +14,8 @@ RUN apt-get update && \
     tcpdump \
     build-essential \
     python3-pip \ 
-    python3-scapy
+    python3-scapy \
+    iproute2
 
 RUN mkdir -p ${workdir}
 

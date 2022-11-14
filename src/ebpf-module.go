@@ -17,7 +17,7 @@ type ebpfModule struct {
 	config    *EbpfPrograms
 }
 
-func (m *ebpfModule) getRequestedArg(requested string, info *veth_info) (string, error) {
+func (m *ebpfModule) getRequestedArg(requested string, info *veth_info, podIP string) (string, error) {
 	var arg string
 	switch requested {
 	case BPF_ARG_VETH_NAME:
@@ -34,6 +34,8 @@ func (m *ebpfModule) getRequestedArg(requested string, info *veth_info) (string,
 		arg = info.VpeerMac
 	case BPF_ARG_NAMESPACE:
 		arg = info.Namespace
+	case BPF_ARG_POD_IP:
+		arg = podIP
 	default:
 		return "", fmt.Errorf("Requested arg %s not available in veth-info.", requested)
 	}
@@ -80,7 +82,7 @@ func (m *ebpfModule) AttachEBPFNetwork(pod *v1.Pod, program string) error {
 	*/
 	cmd.Dir = bpfProgram.Path
 	for _, requested := range bpfProgram.Env {
-		param, err := m.getRequestedArg(requested, info)
+		param, err := m.getRequestedArg(requested, info, podIP)
 		if err != nil {
 			return err
 		}

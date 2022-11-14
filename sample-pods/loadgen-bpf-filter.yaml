@@ -14,7 +14,7 @@ spec:
       labels:
         app: loadgen-1
       annotations:
-        ebpf-attachment: "mac-filter"
+        ebpf-attachment: "bpf-filter"
     spec:
       containers:
       - name: loadgen-1

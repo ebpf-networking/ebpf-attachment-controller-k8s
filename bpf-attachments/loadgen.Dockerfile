@@ -17,6 +17,8 @@ RUN apt-get update && \
     python3-scapy \
     iproute2
 
+RUN apt-get install -y iputils-ping vim
+
 RUN mkdir -p ${workdir}
 
 RUN mkdir -p ${workdir}/bpf-filter/

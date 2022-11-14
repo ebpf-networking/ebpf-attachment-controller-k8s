@@ -1,7 +1,7 @@
 {
     "attachments" : {
-        "mac-filter": {
-            "program": "ebpf based mac filtering code",
+        "bpf-filter": {
+            "program": "ebpf based mac and ip filtering code",
             "cmd": "bpf-filter.sh",
             "path": "/opt/controller/bpf-attachments/bpf-filter/",
             "args" : [
@@ -12,7 +12,7 @@
             ]
         },
         "rate-limiter": {
-            "program": "rate limiter code",
+            "program": "ebpf based packet rate limiter code",
             "cmd": "map_update.sh",
             "path": "/opt/controller/bpf-attachments/ebpf-ratelimiter/",
             "args" : [
